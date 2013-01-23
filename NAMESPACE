@@ -1,0 +1,7 @@
+exportClasses(metaFixed)
+exportClasses(metaLocalized)
+exportPattern("^[^\\.]")
+import(data.table)
+import(ggplot2)
+import(methods)
+import(zoo)

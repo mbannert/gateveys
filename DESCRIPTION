@@ -1,0 +1,23 @@
+Package: gateveys
+Type: Package
+Title: An R Toolbox for Business Tendency Survey Researchers
+Version: 1.0
+Date: 2012-11-07
+Author: Matthias Bannert
+Maintainer: Matthias Bannert <bannert@kof.ethz.ch>
+Description: This package helps to aggregate a load of single participant
+    answers to weighted groups. It can handle cross-sectional data as well as
+    panel data.
+Depends:
+    data.table,methods,ggplot2,zoo
+License: GPL
+Collate:
+    'gateveys.R'
+    'pkgdoc.R'
+    'timeSeries.R'
+    'unions.R'
+    'metaFixed.R'
+    'metaLocalized.R'
+    'plotting.R'
+    'NOGA08.R'
+    'randomPanel.R'
