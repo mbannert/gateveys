@@ -58,7 +58,7 @@ replaceNA <- function(x,subst){
 #' @example examples/setSizeClassExample.R
 #' @seealso \code{\link{setSizeClass}, \link{generateSamplePanel}}
 setSizeClass <- function (x, thresholdList, sector = "all", sizeColumn = "size", 
-          sectorColumn = "sector", resultColumn = "sizeClass", minimalClass = "S") 
+                          sectorColumn = "sector", resultColumn = "sizeClass", minimalClass = "S") 
 {
   stopifnot(is.data.frame(x))
   stopifnot(is.list(thresholdList))
@@ -69,19 +69,19 @@ setSizeClass <- function (x, thresholdList, sector = "all", sizeColumn = "size",
   if (sector == "all") {
     x[, resultColumn] <- minimalClass
     for (i in 1:length(thresholdList)) {
-      x[x[, sizeColumn] > thresholdList[[i]], resultColumn] <- names(thresholdList[i])
+      x[x[, sizeColumn] > thresholdList[[i]], resultColumn] <- names(thresholdList)[i]
     }
   }
   else {
     x[x[, sectorColumn] == sector, resultColumn] <- minimalClass
     for (i in 1:length(thresholdList)) {
       x[x[, sectorColumn] == sector & x[, sizeColumn] > 
-          thresholdList[[i]], resultColumn] <- names(thresholdList[i])
+          thresholdList[[i]], resultColumn] <- names(thresholdList)[i]
     }
   }
-  # try x <- as.factor(x)
   return(x)
 }
+
 
 
 #' calculate the weighted share that corresponds to a particular category
