@@ -124,11 +124,12 @@ weighByMultiClasses <- function (dtable, keyvector, variables, weight)
   stopifnot(is.data.table(dtable))
   stopifnot(is.vector(keyvector))
   stopifnot(is.vector(variables))
+  fxdkey <- key(dtable)
   resultList <- list()
   for (i in 1:length(keyvector)) {
     dtable <- dtable[!(is.na(dtable[, get(keyvector[i])])), 
                      ]
-    keys <- c(keyvector[i], key(dtable))
+    keys <- c(keyvector[i], fxdkey)
     setkeyv(dtable, keys)
     if (exists("mclapply")) {
       resultList[[i]] <- mclapply(variables, FUN = function(X) {
@@ -142,9 +143,9 @@ weighByMultiClasses <- function (dtable, keyvector, variables, weight)
     }
     names(resultList[[i]]) <- variables
   }
+  names(resultList) <- keyvector
   return(resultList)
 }
-
 #' draw random variables from a mixed distribution
 #' 
 #' @author Matthias Bannert
