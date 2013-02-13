@@ -464,10 +464,10 @@ linearizeNestedList <- function (nList, linearizeDataFrames=FALSE,
 #' @author Matthias Bannert
 #' @param li named list of data.frames
 #' @example examples/linearizeNestedListExample.R
-for.setattr <- function(li){
+for.setattr <- function(li,key="tskey"){
   stopifnot(!is.null(names(li)))
   for (i in seq_along(li)) 
-    setattr(li[[i]], name = 'tskey', value = names(li[i]))
+    setattr(li[[i]], name = key, value = names(li[i]))
 }
   
 #' Turn Names Generated from the Aggregation Process into valid tskeys
