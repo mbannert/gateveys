@@ -10,9 +10,11 @@
 #' @param year name of the column that contains year
 #' @param var name of the column that contains the variable of interest
 #' @param env environment to assign time series to, default '.GlobalEnv'
+#' @param addKey additional time series key for second referencing system, 'fameKey' 
+#' is the historic default referring to SUNGUARD's time series system FAME. 
 #' @example examples/dataframe2tsExample.R
 dataframe2ts <- function(dataFrame,frequency="Y",period="",year="year",
-                         var="share",env=.GlobalEnv){
+                         var="share",env=.GlobalEnv,addKey="fameKey"){
   # make sure data.tables are turned to data.frames
   dataFrame <- as.data.frame(dataFrame)
   if(!is.na(pmatch(tolower(frequency),"quarterly"))){
@@ -22,6 +24,9 @@ dataframe2ts <- function(dataFrame,frequency="Y",period="",year="year",
   if(exists("zoo")){
     res <- zoo(dataFrame[,var],idx)
     attr(res,'frequency') <- frequency
+    if(!is.null(attr(dataFrame, addKey))){
+      attr(res,addKey) <- attr(dataFrame,addKey)
+    }
     attr(res,'tskey') <- attr(dataFrame,"tskey")
     assign(attr(dataFrame,"tskey"),res,envir=env)
     out <- paste("assigned time series",attr(dataFrame,"tskey"),"to",
