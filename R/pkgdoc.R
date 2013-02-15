@@ -20,6 +20,7 @@
 #'  @import data.table
 #'  @import methods
 #'  @import ggplot2
+#'  @import stringr
 #'  @import zoo
 #'  @exportPattern "^[^\\.]"
 #'  @author Matthias Bannert <bannert@@kof.ethz>

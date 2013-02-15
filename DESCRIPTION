@@ -9,7 +9,7 @@ Description: This package helps to aggregate a load of single participant
     answers to weighted groups. It can handle cross-sectional data as well as
     panel data.
 Depends:
-    data.table,methods,ggplot2,zoo
+    data.table,methods,ggplot2,zoo,stringr
 License: GPL
 Collate:
     'gateveys.R'
