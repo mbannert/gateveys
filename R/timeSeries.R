@@ -143,17 +143,19 @@ addFixedMetaData <- function(x,stat="normal",
 #' @seealso \code{\link{addFixedMetaData}}
 #' @example examples/addMetaDataExample.R
 addLocalizedMetaData <- function(x,attrName = "de",qDict=questionDescription.de,
-                                  aDict=DLU_ANTW,
-                                  wInfo="Gewichtung mit Beschäftigten (capped)",
-                                  desc="Dienstleistungsumfrage basierend auf NOGA08",
-                                  env=.GlobalEnv){
+                                 aDict=DLU_ANTW,
+                                 wInfo="Gewichtung mit Beschäftigten (capped)",
+                                 desc="Dienstleistungsumfrage basierend auf NOGA08",
+                                 env=.GlobalEnv){
   # make this function able to handle 
   # both names and objects themselves
   if(is.character(x)){
     objName <- x
     x <- get(x)
+  } else {
+    objName <- deparse(substitute(x))  
   } 
-  objName <- deparse(substitute(x))
+  
   
   # localize this function 
   if(attrName=="de") lang <- "D"
