@@ -90,12 +90,15 @@ swapObjectName <- function(x,attr1="tskey",attr2="fameKey"){
 #' meta information
 #' @param env environment to which the resulting time series will be 
 #' appended, default .GlobalEn.
+#' @param keepKey logical default FALSE, keep key outside the class. 
+#' setting this argument to TRUE can help to swap names based on keys..
 #' @seealso \code{\link{addLocalizedMetaData}}
 #' @example examples/addMetaDataExample.R
 addFixedMetaData <- function(x,stat="normal",
                                    unit="percent",
                                    unitMulti=1,qType="qualitative",
-                                   env=.GlobalEnv){
+                                   env=.GlobalEnv
+                                   keepKey=F){
   tsname <- ifelse(is.character(x),x,deparse(substitute(x)))
   
   # ifelse would not work cause condition is of length 1 !!
@@ -112,8 +115,10 @@ addFixedMetaData <- function(x,stat="normal",
            questionType = qType,
            relatedSeries = strsplit(tsname,"\\.item")[[1]][1])
   metaFixed(x) <- m
-  # remove that duplicate information
-  attr(x,"tskey") <- NULL
+  # remove that duplicate information, but keep key on demand... 
+  if(!keepKey){
+    attr(x,"tskey") <- NULL
+  }
   attr(x,"frequency") <- NULL
   assign(tsname,x,envir=env)
   out <- paste(tsname,"successfully updated with fixed meta information.")
