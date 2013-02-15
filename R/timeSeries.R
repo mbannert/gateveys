@@ -142,7 +142,7 @@ addFixedMetaData <- function(x,stat="normal",
 #' @param desc language specific description
 #' @seealso \code{\link{addFixedMetaData}}
 #' @example examples/addMetaDataExample.R
-addLocalizedMetaData2 <- function(x,attrName = "de",qDict=questionDescription.de,
+addLocalizedMetaData <- function(x,attrName = "de",qDict=questionDescription.de,
                                   aDict=DLU_ANTW,
                                   wInfo="Gewichtung mit Beschäftigten (capped)",
                                   desc="Dienstleistungsumfrage basierend auf NOGA08",
