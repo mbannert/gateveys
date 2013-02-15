@@ -40,6 +40,43 @@ dataframe2ts <- function(dataFrame,frequency="Y",period="",year="year",
   }
 }
 
+#' Swap object Name based on two attribute names
+#' 
+#' This function swaps the name of an R object between two of its attributes. 
+#' Objects need to have at least to character objects to use this function. 
+#' Typically one character object should be equal to the objects original name
+#' in order to be able to swap back to the old name. 
+#' 
+#' @author Matthias Bannert
+#' @param x R object or character name of an object
+#' @param attr1 name of the first attribute. Default is 'tskey'. Typically the 
+#' name of this attribute is equal to the initial object name
+#' @param attr2 name of the second attribute. Object will change its name to the
+#' value of this second attribute. Default value is 'fameKey'
+swapObjectName <- function(x,attr1="tskey",attr2="fameKey"){
+  
+  if(is.character(x)){
+    objName <- x
+    x <- get(x)
+  } else {
+    objName <- deparse(substitute(x))
+  } 
+  
+  n1 <- attr(x,attr1)
+  n2 <- attr(x,attr2)
+  
+  if(objName == n1){
+    assign(n2,x,envir=.GlobalEnv)
+    
+  } else {
+    assign(n1,x,envir=.GlobalEnv)
+  }
+  rm(list=c(objName),envir=.GlobalEnv)
+  paste("Object name swapped.")
+}
+
+
+
 
 #' add non-Localized Meta Information to an existing zoo object
 #' 
