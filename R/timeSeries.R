@@ -97,7 +97,7 @@ swapObjectName <- function(x,attr1="tskey",attr2="fameKey"){
 addFixedMetaData <- function(x,stat="normal",
                                    unit="percent",
                                    unitMulti=1,qType="qualitative",
-                                   env=.GlobalEnv
+                                   env=.GlobalEnv,
                                    keepKey=F){
   tsname <- ifelse(is.character(x),x,deparse(substitute(x)))
   
