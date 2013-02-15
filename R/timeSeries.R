@@ -134,56 +134,68 @@ addFixedMetaData <- function(x,stat="normal",
 #' @author Matthias Bannert
 #' @param x any R object to assign meta data to, typically a zoo object
 #' @param attrName iso name string that indicated the localization
-#' @param srvy character constant that represents the analyzed survey
 #' @param wInfo character string that contains some weighting information,
 #' typically 'weighted', 'unweighted' or ''.
 #' @param qDict a data.frame that contains some meta descriptions for 
 #' questions. Might be read from an external source.
 #' @param env environment to assign time series too, .GlobalEnv is default.
-#' @param langChunk1 language specific chunk 1 for description
-#' @param langChunk2 language specific chunk 2 for description
+#' @param desc language specific description
 #' @seealso \code{\link{addFixedMetaData}}
 #' @example examples/addMetaDataExample.R
-addLocalizedMetaData <- function(x,li=listOfSeries,
-                                       attrName="de_CH",srvy=SURVEY,
-                                       wInfo="weighted",
-                                       qDict=questionDescription.de,
-                                       env=.GlobalEnv,
-                                       langChunk1="of participants who chose",
-                                       langChunk2="when answering"){
-  # define a couple of variables for use instance constructor below 
-  tsname <- ifelse(is.character(x),x,deparse(substitute(x)))
-  # ifelse would not work cause condition is of length 1 !!
-  if (is.character(x)) x <-  get(x)
-  else x <- x   
-  chunks <- strsplit(tsname,"\\.")[[1]]
-  vars <- names(li[[tsname]])
-  lv <- length(vars)
-  l <- length(chunks)
+addLocalizedMetaData2 <- function(x,attrName = "de",qDict=questionDescription.de,
+                                  aDict=DLU_ANTW,
+                                  wInfo="Gewichtung mit Beschäftigten (capped)",
+                                  desc="Dienstleistungsumfrage basierend auf NOGA08",
+                                  env=.GlobalEnv){
+  # make this function able to handle 
+  # both names and objects themselves
+  if(is.character(x)){
+    objName <- x
+    x <- get(x)
+  } 
+  objName <- deparse(substitute(x))
+  
+  # localize this function 
+  if(attrName=="de") lang <- "D"
+  if(attrName=="fr") lang <- "F"
+  if(attrName=="it") lang  <- "I"
+  
+  
+  # split name into its informative parts
+  chunks <- strsplit(objName, "\\.")[[1]]
+  srvy <- chunks[3]
+  aLvl <- chunks[4]
+  q <- str_extract(chunks[5],"[0-9]{1,4}")
+  nclass <- chunks[6]
+  itm <- str_extract(chunks[length(chunks)],"[0-9]{1}")
+  
+  # get selected item, all items
+  s.itm <- aDict[aDict[,"SPRACHE"] == lang & 
+                   aDict[,"CODE"] == itm &
+                   aDict[,"FRAGENR"] == q, "BEDEUTUNG"]
+  
+  a.itm <- paste(aDict[aDict[,"SPRACHE"] == lang & 
+                         aDict[,"FRAGENR"] == q, "BEDEUTUNG"],collapse=", ")
+  
+  # create new Class metaLocalized
   m <- new("metaLocalized",
-           # could be generated from question Wording,
-           # maybe build a dict for that
-           # what to do with empty fields
            title = qDict[qDict$qkey == chunks[5],"questionShortLabel"],
-           selectedItem = chunks[l],
-           # KOF Survey, employment weighted shares question item
-           description = paste(wInfo,vars[lv],langChunk1,
-                               chunks[l],langChunk2,chunks[5],",",
-                               chunks[2],srvy),
-           aLevel = chunks[4], 
-           selectedGroup = chunks[6],
+           selectedItem = s.itm,
+           description = desc,
+           aLevel = aLvl,
+           selectedGroup = nclass, 
            survey = SURVEY,
-           questionWording = qDict[qDict$qkey == chunks[5],"questionWording"],
-           # need factors here from the very beginning
-           itemLevels = levels(li[[tsname]][,get(chunks[5])]),
-           # a manual description 
-           weightingInformation = wInfo)
-  attr(x,paste("metaLocalized",attrName,sep=".")) <- m
-  assign(tsname, x, envir = env)
-  out <- paste(tsname, "successfully updated with localized meta information.")
-  return(out)  
+           questionWording = as.character(qDict[qDict$qkey == chunks[5],
+                                                "questionWording"]),
+           itemLevels = a.itm,
+           weightingInformation = wInfo
+  )
+  
+  attr(x, paste("metaLocalized", attrName, sep = ".")) <- m
+  assign(objName, x, envir = env)
+  out <- paste(objName, " successfully updated with localized meta information.")
+  return(out)
 }
-
 
 
 
