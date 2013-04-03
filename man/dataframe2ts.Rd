@@ -3,7 +3,8 @@
 \title{Generate a zoo Object from a suitable data.frame}
 \usage{
   dataframe2ts(dataFrame, frequency = "Y", period = "",
-    year = "year", var = "share", env = .GlobalEnv)
+    year = "year", var = "share", env = .GlobalEnv,
+    addKey = "fameKey")
 }
 \arguments{
   \item{dataFrame}{input data.frame}
@@ -22,6 +23,10 @@
 
   \item{env}{environment to assign time series to, default
   '.GlobalEnv'}
+
+  \item{addKey}{additional time series key for second
+  referencing system, 'fameKey' is the historic default
+  referring to SUNGUARD's time series system FAME.}
 }
 \description{
   Dont forget that

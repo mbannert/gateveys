@@ -11,5 +11,5 @@ srvyData$sector <- "A"
 # create classes based on weight
 srvyData <- setSizeClass(srvyData,
                               thresholdList=list(M=20,L=40),
-                              sizeColumn="weight", 
-                              sectorColumn="sector")
+                              size="weight", 
+                              sectorColumn="all")

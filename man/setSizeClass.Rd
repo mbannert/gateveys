@@ -1,55 +1,36 @@
 \name{setSizeClass}
 \alias{setSizeClass}
-\title{Add Size Class based on weights}
+\title{Set Size Class based on a Quantitative Variable}
 \usage{
-  setSizeClass(x, thresholdList, sector = "all",
-    sizeColumn = "size", sectorColumn = "sector",
-    resultColumn = "sizeClass", minimalClass = "S")
+  setSizeClass(df, thresholdList, sectorColumn = "all",
+    resultColumn = "sClass", size = "BESCHAEFTIGTE",
+    minClassLabel = "S")
 }
 \arguments{
-  \item{x}{data.frame that contains the dataset}
+  \item{df}{data.frame that contains the basic dataset}
 
-  \item{thresholdList}{List of group specific threshold
-  assignments}
+  \item{thresholdList}{list of thresholds, list elements
+  can be vectors if different groups have different
+  thresholds}
 
-  \item{sector}{}
+  \item{sectorColumn}{character string indicating the
+  column that specifies the groups at across which
+  thresholds could be different. Default is 'all' meaning
+  all groups have the same thresholds.}
 
-  \item{sizeColumn}{}
+  \item{resultColumn}{character string containing the name
+  of the resulting column}
 
-  \item{sectorColumn}{}
-
-  \item{resultColumn}{}
-
-  \item{minimalClass}{}
-}
-\value{
-  factor containing size classes defined in thresholdList
-  and minimalClass. e.g.: S,M,L
+  \item{size}{character string containing the name of the
+  quantitative variable.}
 }
 \description{
-  Add Size Class based on weights
-}
-\examples{
-# generate survey likerandom sample
-srvyData <- generateSamplePanel(500,3,"quarterly",
-                    c(1999,1),
-                    c(1999,1),
-                    weight=round(runif(500,2,80)))
-
-# add a sector, cause function supports different 
-# thresholdLists for different sectors
-srvyData$sector <- "A"
-
-# create classes based on weight
-srvyData <- setSizeClass(srvyData,
-                              thresholdList=list(M=20,L=40),
-                              sizeColumn="weight", 
-                              sectorColumn="sector")
+  This function is used in survey based research to create
+  size groups based on a quantitative variable like the
+  number of employees. Users can specify multiple
+  thresholds that may vary over groups.
 }
 \author{
   Matthias Bannert
-}
-\seealso{
-  \code{\link{setSizeClass}, \link{generateSamplePanel}}
 }
 

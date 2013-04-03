@@ -2,7 +2,7 @@
 \name{gateveys}
 \alias{gateveys}
 \alias{gateveys-package}
-\title{The toolbox for aggregation of qualitative surveys}
+\title{An R Toolbox for Business Tendency Survey Researchers}
 \description{
   This package offers functions to facilitate the
   aggregation of qualitative survey data. Is it build to

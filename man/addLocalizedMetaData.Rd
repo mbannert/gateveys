@@ -2,11 +2,11 @@
 \alias{addLocalizedMetaData}
 \title{add localized meta data to an exisiting zoo object}
 \usage{
-  addLocalizedMetaData(x, li = listOfSeries,
-    attrName = "de_CH", srvy = SURVEY, wInfo = "weighted",
-    qDict = questionDescription.de, env = .GlobalEnv,
-    langChunk1 = "of participants who chose",
-    langChunk2 = "when answering")
+  addLocalizedMetaData(x, attrName = "de",
+    qDict = questionDescription.de, aDict = DLU_ANTW,
+    wInfo = "Gewichtung mit Beschäftigten (capped)",
+    desc = "Dienstleistungsumfrage basierend auf NOGA08",
+    env = .GlobalEnv)
 }
 \arguments{
   \item{x}{any R object to assign meta data to, typically a
@@ -14,9 +14,6 @@
 
   \item{attrName}{iso name string that indicated the
   localization}
-
-  \item{srvy}{character constant that represents the
-  analyzed survey}
 
   \item{wInfo}{character string that contains some
   weighting information, typically 'weighted', 'unweighted'
@@ -29,11 +26,7 @@
   \item{env}{environment to assign time series too,
   .GlobalEnv is default.}
 
-  \item{langChunk1}{language specific chunk 1 for
-  description}
-
-  \item{langChunk2}{language specific chunk 2 for
-  description}
+  \item{desc}{language specific description}
 }
 \description{
   add language specific meta information to a time series

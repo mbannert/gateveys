@@ -43,43 +43,58 @@ replaceNA <- function(x,subst){
   return(x)
 }
 
-#' Add Size Class based on weights
+#' Set Size Class based on a Quantitative Variable
+#' 
+#' This function is used in survey based research to create 
+#' size groups based on a quantitative variable like the number of employees. 
+#' Users can specify multiple thresholds that may vary over groups. 
 #' 
 #' @author Matthias Bannert
-#' @param x data.frame that contains the dataset
-#' @param thresholdList List of group specific threshold assignments
-#' @param sector
-#' @param sizeColumn
-#' @param sectorColumn
-#' @param resultColumn
-#' @param minimalClass
-#' @return factor containing size classes defined in thresholdList 
-#' and minimalClass. e.g.: S,M,L
-#' @example examples/setSizeClassExample.R
-#' @seealso \code{\link{setSizeClass}, \link{generateSamplePanel}}
-setSizeClass <- function (x, thresholdList, sector = "all", sizeColumn = "size", 
-                          sectorColumn = "sector", resultColumn = "sizeClass", minimalClass = "S") 
-{
-  stopifnot(is.data.frame(x))
-  stopifnot(is.list(thresholdList))
-  stopifnot(sizeColumn %in% names(x))
-  stopifnot(sectorColumn %in% names(x))
-  if (!(sizeColumn %in% names(x))) 
-    x[, resultColumn] <- NA
-  if (sector == "all") {
-    x[, resultColumn] <- minimalClass
-    for (i in 1:length(thresholdList)) {
-      x[x[, sizeColumn] > thresholdList[[i]], resultColumn] <- names(thresholdList)[i]
-    }
+#' @param df data.frame that contains the basic dataset
+#' @param thresholdList list of thresholds, list elements can be vectors if
+#' different groups have different thresholds
+#' @param sectorColumn character string indicating the column that specifies
+#' the groups at across which thresholds could be different. Default is 'all' 
+#' meaning all groups have the same thresholds.  
+#' @param resultColumn character string containing the name of the resulting
+#' column
+#' @param size character string containing the name of the quantitative variable.
+
+setSizeClass <- function(df,thresholdList,sectorColumn="all",resultColumn="sClass",
+                         size="BESCHAEFTIGTE",minClassLabel="S"){
+  mx <- max(df[,size])+1
+  
+  # all groups have the same size Class threshholds
+  if(sectorColumn == "all"){
+    df[,resultColumn] <- cut(df[,size],
+                             breaks=c(0,unlist(thresholdList),mx),
+                             labels=c(minClassLabel,names(thresholdList))
+    )
+    df
+    # sizeClass thresholds among different groups differ
+  } else {
+    # split data.frame by group to get n lists of dfs  
+    df.split <- split(df,df[,sectorColumn])
+    nms <- names(df.split)
+    
+    # cut it by breaks and add labels
+    li <- lapply(nms,function(x){
+      cut(df.split[[x]][,size],
+          breaks=c(0,thresholdList[[x]],mx),
+          labels=c(minClassLabel,names(thresholdList[[x]]))
+      )
+    }) 
+    
+    names(li) <- nms
+    # output
+    out <- lapply(nms,function(x) cbind(df.split[[x]],li[[x]]))
+    out <- do.call("rbind",out)
+    names(out)[ncol(out)] <- resultColumn
+    out
+    
   }
-  else {
-    x[x[, sectorColumn] == sector, resultColumn] <- minimalClass
-    for (i in 1:length(thresholdList)) {
-      x[x[, sectorColumn] == sector & x[, sizeColumn] > 
-          thresholdList[[i]], resultColumn] <- names(thresholdList)[i]
-    }
-  }
-  return(x)
+  
+  
 }
 
 

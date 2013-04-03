@@ -3,7 +3,8 @@
 \title{add non-Localized Meta Information to an existing zoo object}
 \usage{
   addFixedMetaData(x, stat = "normal", unit = "percent",
-    unitMulti = 1, qType = "qualitative", env = .GlobalEnv)
+    unitMulti = 1, qType = "qualitative", env = .GlobalEnv,
+    keepKey = F)
 }
 \arguments{
   \item{x}{an object of class zoo}
@@ -22,6 +23,10 @@
 
   \item{env}{environment to which the resulting time series
   will be appended, default .GlobalEn.}
+
+  \item{keepKey}{logical default FALSE, keep key outside
+  the class. setting this argument to TRUE can help to swap
+  names based on keys..}
 }
 \description{
   add non-Localized Meta Information to an existing zoo

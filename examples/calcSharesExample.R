@@ -14,8 +14,8 @@ sData <- generateRandomNAs(sData,c(1:3,7),30,1)
 sData <- merge(sData,generateRandomGroups(3,unique(sData$uid)),by="uid")
 
 # set some size class, only needed for the weighByMultiClasses function
-sData <- setSizeClass(sData,thresholdList=list(M=20,L=200),sizeColumn="weight",
-             sectorColumn="group")
+sData <- setSizeClass(sData,thresholdList=list(M=20,L=200),size="weight",
+             sectorColumn="all")
 
 # turn data.frame to data.table to use the keys
 sData.dt <- data.table(sData,key=c("year","period","group"))

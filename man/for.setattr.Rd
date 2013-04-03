@@ -2,7 +2,7 @@
 \alias{for.setattr}
 \title{Add tskey attribute to every data.frame in a list of data.frames}
 \usage{
-  for.setattr(li)
+  for.setattr(li, key = "tskey")
 }
 \arguments{
   \item{li}{named list of data.frames}
