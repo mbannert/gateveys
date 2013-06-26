@@ -142,18 +142,18 @@ weighByMultiClasses <- function (dtable, keyvector, variables, weight)
   fxdkey <- key(dtable)
   resultList <- list()
   for (i in 1:length(keyvector)) {
-    dtable <- dtable[!(is.na(dtable[, get(keyvector[i])])), 
+    newtab <- dtable[!(is.na(dtable[, get(keyvector[i])])), 
                      ]
     keys <- c(keyvector[i], fxdkey)
-    setkeyv(dtable, keys)
+    setkeyv(newtab, keys)
     if (exists("mclapply")) {
       resultList[[i]] <- mclapply(variables, FUN = function(X) {
-        do.call(calcShares, list(dtable, X, weight))
+        do.call(calcShares, list(newtab, X, weight))
       })
     }
     else {
       resultList[[i]] <- lapply(variables, FUN = function(X) {
-        do.call(calcShares, list(dtable, X, weight))
+        do.call(calcShares, list(newtab, X, weight))
       })
     }
     names(resultList[[i]]) <- variables
