@@ -114,12 +114,12 @@ calcShares <- function (dt, var, sizeColumn)
   sizeColumn <- as.name(sizeColumn)
   dt[i = !(is.na(eval(v))), j = {
     n <- sum(.SD[, eval(sizeColumn)])
+    n1 <- length(.SD[, eval(sizeColumn)])
     .SD[, list(sumTest = sum(eval(sizeColumn)), sumTestTotal = n, 
-               AN = length(.SD[, eval(sizeColumn)]), share = sum(eval(sizeColumn))/n), 
+               AN = length(.SD[, eval(sizeColumn)]),ANTot = n1, share = sum(eval(sizeColumn))/n), 
         by = eval(as.character(v))]
   }, by = key(dt)]
 }
-
 
 
 
